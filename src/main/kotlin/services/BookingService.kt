@@ -13,12 +13,12 @@ class BookingService(
 
     @Transactional
     public fun bookProducts(booking: Booking) {
-        for (bakeryFromBook in booking.getBasket()) {
-            val quantityOfBakery = bakeryFromBook.quantity
-            val bakeryFromDb = bakingRepository.findById(bakeryFromBook.id!!).orElseThrow()
+        for (bakeryFromBooking in booking.getBasket()) {
+            val quantityOfBakery = bakeryFromBooking.quantity
+            val bakeryFromDb = bakingRepository.findById(bakeryFromBooking.id).orElseThrow()
 
             if (bakeryFromDb.quantity < quantityOfBakery) {
-                throw RuntimeException("Not enough quantity for product id=${bakeryFromBook.id}")
+                throw RuntimeException("Not enough quantity for product id=${bakeryFromBooking.id}")
             }
 
             bakeryFromDb.quantity -= quantityOfBakery
