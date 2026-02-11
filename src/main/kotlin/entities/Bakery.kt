@@ -13,7 +13,7 @@ abstract class Bakery(
     val price: Int,
 
     @Column(nullable = false)
-    val quantity: Int,
+    var quantity: Int,
 
     @Column(nullable = false)
     @ElementCollection(targetClass = BakingFilling::class)

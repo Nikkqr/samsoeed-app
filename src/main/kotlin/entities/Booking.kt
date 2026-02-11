@@ -17,4 +17,8 @@ data class Booking(val id: Int, val customerName: String) {
             basket.add(i)
         }
     }
+
+    fun getBasket() : MutableList<Bakery> {
+        return basket
+    }
 }
