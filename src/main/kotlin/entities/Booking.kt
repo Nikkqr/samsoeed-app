@@ -1,24 +1,37 @@
 package com.samsoeed.entities
 
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import org.springframework.data.annotation.Id
 import java.time.LocalDateTime
+import jakarta.persistence.Column
 
-data class Booking(val id: Int, val customer: User) {
+@Entity
+data class Booking(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int,
 
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    @Column
+    val customerId: UInt,
 
-    private var basket: MutableList<Bakery> = mutableListOf()
+    @Column
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 
-    constructor(id: Int, customer: User, basket: MutableList<Bakery>) : this(id, customer) {
-        this.basket = basket
+    @Column
+    val combinationId : MutableList<UInt>,
+
+    @Column
+    val state: State
+)
+{
+
+    fun addBakery(bakeryIds : MutableList<UInt>) {
+        combinationId.addAll(bakeryIds)
     }
 
-    fun addBakery(vararg bakery : Bakery) {
-        for(i in bakery) {
-            basket.add(i)
-        }
-    }
-
-    fun getBasket() : MutableList<Bakery> {
-        return basket
+    fun getCombinationsId() : MutableList<UInt> {
+        return combinationId
     }
 }

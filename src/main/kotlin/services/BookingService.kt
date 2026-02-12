@@ -13,7 +13,7 @@ class BookingService(
 
     @Transactional
     public fun bookProducts(booking: Booking) {
-        for (bakeryFromBooking in booking.getBasket()) {
+        for (bakeryFromBooking in booking.getCombinationsId()) {
             val quantityOfBakery = bakeryFromBooking.quantity
             val bakeryFromDb = bakingRepository.findById(bakeryFromBooking.id).orElseThrow()
 
