@@ -1,7 +1,7 @@
 package com.samsoeed.services
 
 import com.samsoeed.repositories.UserRepository
-import entities.User
+import com.samsoeed.entities.User
 import org.springframework.stereotype.Service
 import org.hibernate.NonUniqueObjectException
 import org.springframework.dao.EmptyResultDataAccessException
