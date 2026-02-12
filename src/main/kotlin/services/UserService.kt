@@ -7,11 +7,12 @@ import org.hibernate.NonUniqueObjectException
 import org.springframework.dao.EmptyResultDataAccessException
 
 @Service
-class UserService (private val userRepository: UserRepository){
-    public fun createUser(user : User) : CrudResult{
+class UserService (private val userRepository: UserRepository) {
+    fun createUser(user : User) : CrudResult{
         try {
-            userRepository.save<User>(user)
-        } catch (e : NonUniqueObjectException ){
+            userRepository.save(user)
+        }
+        catch (e : NonUniqueObjectException ) {
             print(e)
             return CrudResult.AlreadyExists
         }
@@ -19,10 +20,11 @@ class UserService (private val userRepository: UserRepository){
         return CrudResult.SuccessfullyCreated
     }
 
-    public fun removeUser(user : User) : CrudResult{
+     fun removeUser(user : User) : CrudResult {
         try{
             userRepository.delete(user)
-        } catch (e : EmptyResultDataAccessException) {
+        }
+        catch (e : EmptyResultDataAccessException) {
             print(e)
             return CrudResult.NotExists
         }

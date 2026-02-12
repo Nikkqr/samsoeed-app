@@ -3,19 +3,18 @@ package com.samsoeed.entities
 import jakarta.persistence.*
 
 @Entity
-abstract class Bakery(
-
+data class BakeryCombination(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id : Int,
 
     @Column(nullable = false)
-    val price: Int,
+    val bakeryName : BakeryType,
 
     @Column(nullable = false)
-    var quantity: Int,
+    var quantity : Int,
 
-    @Column(nullable = false)
     @ElementCollection(targetClass = BakingFilling::class)
-    var filling: List<BakingFilling>
-)
+    @Enumerated(EnumType.STRING)
+    val filling : List<BakingFilling>) {
+}

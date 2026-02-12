@@ -1,28 +1,32 @@
 package com.samsoeed.services
 
-import com.samsoeed.entities.Bakery
-import com.samsoeed.entities.Booking
-import com.samsoeed.repositories.BakingRepository
+import com.samsoeed.entities.BakeryType
+import com.samsoeed.repositories.BakeryCombinationRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
 class BookingService(
-    private val bakingRepository: BakingRepository
+    private val bakeryCombinationRepository: BakeryCombinationRepository
 ) {
 
     @Transactional
-    public fun bookProducts(booking: Booking) {
-        for (bakeryFromBooking in booking.getBasket()) {
-            val quantityOfBakery = bakeryFromBooking.quantity
-            val bakeryFromDb = bakingRepository.findById(bakeryFromBooking.id).orElseThrow()
+    fun bookProducts(vararg bakeries: BakeryType) {
+        for (bakery in bakeries) {
+            val quantityOfBakery = bakeries.size
+            val bakeryFromDb = bakeryCombinationRepository.findByBakeryName(bakery)
 
-            if (bakeryFromDb.quantity < quantityOfBakery) {
-                throw RuntimeException("Not enough quantity for product id=${bakeryFromBooking.id}")
+            if (bakeryFromDb != null) {
+                if (bakeryFromDb.quantity < quantityOfBakery) {
+                    throw RuntimeException("Not enough quantity for product ${bakery.name}")
+                }
             }
 
-            bakeryFromDb.quantity -= quantityOfBakery
-            bakingRepository.save<Bakery>(bakeryFromDb)
+            bakeryFromDb?.let { bakeryFromDb.quantity -= quantityOfBakery }
+
+            if (bakeryFromDb != null) {
+                bakeryCombinationRepository.save(bakeryFromDb)
+            }
         }
     }
 }
